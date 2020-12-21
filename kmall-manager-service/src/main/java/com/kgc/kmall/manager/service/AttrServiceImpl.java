@@ -33,7 +33,7 @@ public class AttrServiceImpl implements AttrService{
     @Override
     public Integer add(PmsBaseAttrInfo attrInfo) {
         int i=0;
-        //判断是添加还是修改
+        //判断是添加还是修改 id是否为空
         if (attrInfo.getId()==null){
             //添加
             i = pmsBaseAttrInfoMapper.insert(attrInfo);
