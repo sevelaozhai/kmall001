@@ -1,7 +1,9 @@
 package com.kgc.kmall.manager.controller;
 
 import com.kgc.kmall.bean.PmsBaseSaleAttr;
+import com.kgc.kmall.bean.PmsProductImage;
 import com.kgc.kmall.bean.PmsProductInfo;
+import com.kgc.kmall.bean.PmsProductSaleAttr;
 import com.kgc.kmall.service.SpuService;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.dubbo.config.annotation.Reference;
@@ -24,51 +26,68 @@ public class SpuController {
     SpuService spuService;
     @Value("${fileServer.url}")
     String fileUrl;
+
     @RequestMapping("/spuList")
-    public List<PmsProductInfo> spuList(Long catalog3Id){
+    public List<PmsProductInfo> spuList(Long catalog3Id) {
         List<PmsProductInfo> infoList = spuService.spuList(catalog3Id);
         return infoList;
     }
-//    @RequestMapping("/fileUpload")
+
+    //    @RequestMapping("/fileUpload")
 //    public  String fileUpload(@RequestParam("file")MultipartFile file){
 //        //文件上传
 //        //返回文件上传后的路径
 //        return "https://m.360buyimg.com/babel/jfs/t5137/20/1794970752/352145/d56e4e94/591417dcN4fe5ef33.jpg";
 //    }
-@RequestMapping("/fileUpload")
-public String fileUpload(@RequestParam("file")MultipartFile file) throws IOException, MyException {
-    //文件上传
-    //返回文件上传后的路径
-    String imgUrl=fileUrl;
-    if(file!=null){
-        System.out.println("multipartFile = " + file.getName()+"|"+file.getSize());
+    @RequestMapping("/fileUpload")
+    public String fileUpload(@RequestParam("file") MultipartFile file) throws IOException, MyException {
+        //文件上传
+        //返回文件上传后的路径
+        String imgUrl = fileUrl;
+        if (file != null) {
+            System.out.println("multipartFile = " + file.getName() + "|" + file.getSize());
 
-        String configFile = this.getClass().getResource("/tracker.conf").getFile();
-        ClientGlobal.init("E:\\java比较杂项的资料\\分布式\\kmall003\\kmall-manager-web\\src\\main\\resources\\tracker.conf");
-        TrackerClient trackerClient=new TrackerClient();
-        TrackerServer trackerServer=trackerClient.getTrackerServer();
-        StorageClient storageClient=new StorageClient(trackerServer,null);
-        String filename=    file.getOriginalFilename();
-        String extName = FilenameUtils.getExtension(filename);
-
-        String[] upload_file = storageClient.upload_file(file.getBytes(), extName, null);
-        imgUrl=fileUrl ;
-        for (int i = 0; i < upload_file.length; i++) {
-            String path = upload_file[i];
-            imgUrl+="/"+path;
+            String configFile = this.getClass().getResource("/tracker.conf").getFile();
+            ClientGlobal.init("E:\\java比较杂项的资料\\分布式\\kmall003\\kmall-manager-web\\src\\main\\resources\\tracker.conf");
+            TrackerClient trackerClient = new TrackerClient();
+            TrackerServer trackerServer = trackerClient.getTrackerServer();
+            StorageClient storageClient = new StorageClient(trackerServer, null);
+            String filename = file.getOriginalFilename();
+            //获取文件的扩展名
+            String extName = FilenameUtils.getExtension(filename);
+            //地址json       文件扩展名
+            String[] upload_file = storageClient.upload_file(file.getBytes(), extName, null);
+            imgUrl = fileUrl;
+            for (int i = 0; i < upload_file.length; i++) {
+                String path = upload_file[i];
+                imgUrl += "/" + path;
+            }
         }
+        System.out.println(imgUrl);
+        return imgUrl;
     }
-    System.out.println(imgUrl);
-    return imgUrl;
-}
 
     @RequestMapping("/baseSaleAttrList")
-    public List<PmsBaseSaleAttr> baseSaleAttrList(){
+    public List<PmsBaseSaleAttr> baseSaleAttrList() {
         List<PmsBaseSaleAttr> saleAttrList = spuService.baseSaleAttrList();
         return saleAttrList;
     }
+
     @RequestMapping("/saveSpuInfo")
-    public String saveSpuInfo(@RequestBody PmsProductInfo pmsProductInfo){
-        return "success";
+    public String saveSpuInfo(@RequestBody PmsProductInfo pmsProductInfo) {
+        //保存数据库
+        Integer integer = spuService.saveSpuInfo(pmsProductInfo);
+        return integer > 0 ? "success" : "fail";
+    }
+    @RequestMapping("/spuSaleAttrList")
+    public List<PmsProductSaleAttr> spuSaleAttrList(Long spuId){
+        List<PmsProductSaleAttr> pmsProductSaleAttrList=spuService.spuSaleAttrList(spuId);
+        return pmsProductSaleAttrList;
+    }
+
+    @RequestMapping("/spuImageList")
+    public List<PmsProductImage> spuImageList(Long spuId){
+        List<PmsProductImage> pmsProductImageList = spuService.spuImageList(spuId);
+        return pmsProductImageList;
     }
 }
