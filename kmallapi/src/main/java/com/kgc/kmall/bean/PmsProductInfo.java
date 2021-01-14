@@ -1,18 +1,23 @@
 package com.kgc.kmall.bean;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.List;
-
+@ApiModel("平台商品属性实体类")
 public class PmsProductInfo implements Serializable {
+    @ApiModelProperty("平台商品属性编号")
     private Long id;
 
 //    private String productName;
+@ApiModelProperty("平台商品属性名称")
     private String spuName;
-
+    @ApiModelProperty("平台商品属性描述")
     private String description;
-
+    @ApiModelProperty("三级分类编号")
     private Long catalog3Id;
-
+    @ApiModelProperty("平台商品属性品牌编号")
     private Long tmId;
 
     private List<PmsProductImage> spuImageList;

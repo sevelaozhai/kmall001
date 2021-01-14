@@ -1,15 +1,19 @@
 package com.kgc.kmall.bean;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.List;
-
+@ApiModel("商品基本属性实体类")
 public class PmsBaseAttrInfo implements Serializable{
+    @ApiModelProperty("商品基本属性编号")
     private Long id;
-
+    @ApiModelProperty("商品基本属性名称")
     private String attrName;
-
+    @ApiModelProperty("商品基本属性的第三分类类编号")
     private Long catalog3Id;
-
+    @ApiModelProperty("商品基本属性是否启用状态")
     private String isEnabled;
 
     private List<PmsBaseAttrValue> attrValueList;

@@ -1,25 +1,29 @@
 package com.kgc.kmall.bean;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.List;
-
+@ApiModel("产品商品实体类")
 public class PmsSkuInfo  implements Serializable {
+    @ApiModelProperty("产品商品库存编号")
     private Long id;
-
+    @ApiModelProperty("平台商品编号")
     private Long spuId;
-
+    @ApiModelProperty("产品商品价格")
     private Double price;
-
+    @ApiModelProperty("产品商品名称")
     private String skuName;
-
+    @ApiModelProperty("产品商品描述")
     private String skuDesc;
-
+    @ApiModelProperty("产品商品重量")
     private Double weight;
-
+    @ApiModelProperty("产品商品品牌编号")
     private Long tmId;
-
+    @ApiModelProperty("三级分类id")
     private Long catalog3Id;
-
+    @ApiModelProperty("是否默认显示图片")
     private String skuDefaultImg;
 
     List<PmsSkuImage> skuImageList;

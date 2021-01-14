@@ -5,6 +5,9 @@ import com.kgc.kmall.bean.PmsProductImage;
 import com.kgc.kmall.bean.PmsProductInfo;
 import com.kgc.kmall.bean.PmsProductSaleAttr;
 import com.kgc.kmall.service.SpuService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.dubbo.config.annotation.Reference;
 import org.csource.common.MyException;
@@ -26,7 +29,6 @@ public class SpuController {
     SpuService spuService;
     @Value("${fileServer.url}")
     String fileUrl;
-
     @RequestMapping("/spuList")
     public List<PmsProductInfo> spuList(Long catalog3Id) {
         List<PmsProductInfo> infoList = spuService.spuList(catalog3Id);
@@ -79,6 +81,7 @@ public class SpuController {
         Integer integer = spuService.saveSpuInfo(pmsProductInfo);
         return integer > 0 ? "success" : "fail";
     }
+
     @RequestMapping("/spuSaleAttrList")
     public List<PmsProductSaleAttr> spuSaleAttrList(Long spuId){
         List<PmsProductSaleAttr> pmsProductSaleAttrList=spuService.spuSaleAttrList(spuId);
